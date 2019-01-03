@@ -5,9 +5,10 @@
 
   // Returns whatever value is passed as the argument. This function doesn't
   // seem very useful, but remember it--if a function needs to provide an
-  // iterator when the user does not pass one in, this will be handy.
-  _.identity = function(val) {
-  };
+  // iterator when the user does not pass one in, this will be handy.c
+  _.identity = function(value){
+    return value;
+   };
 
   /**
    * COLLECTIONS
@@ -36,7 +37,11 @@
 
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
-  _.last = function(array, n) {
+  _.last = function(array,n) {
+    // check n see if n is undefined
+    // if its undefined return last element
+    // if not return the n element at the end of array
+    return n === undefined ? array[array.length-1] : array.slice(Math.max(0,array.length-n))
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -45,6 +50,22 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
+    // check if it's an array or object
+    if(Array.isArray(collection)){
+       // if an array
+      // for loop over each element on collection
+      for(var i = 0; i < collection.length; i++){
+      // call iterator on element
+        iterator(collection[i], i, collection);
+      }
+    } else {
+    // if object
+      // for in loop over each key in collection
+      for(var key in collection){
+       // call iterator on element
+        iterator(collection[key], key, collection);
+      }
+    }
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
@@ -66,16 +87,58 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+
+    // create an array
+    var arr = [];
+
+    // loop thru the collection
+    _.each(collection,function(item){
+      // if the item passes the test push it to the array
+      if (test(item)) {
+        arr.push(item);
+      }
+
+    });
+
+    return arr;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+
+    // create an array
+    var array = [];
+    // iterate the collection using filter
+    _.filter(collection, function(item){
+      // return the negated return result into array
+      if(!test(item)){
+        return array.push(item);
+      }
+    });
+    return array;
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+
+
+
+    // on to the object
+    // loop thru the object
+    // push each key to the array
+    // return the array
+
+    // --
+    // create array
+    var array = []
+    // create object to store the repeated elements
+    var hash = {}
+    // loop thru the array
+      // for each item add as key value pair to the object
+
+
   };
 
 
@@ -107,19 +170,19 @@
   // Reduces an array or object to a single value by repetitively calling
   // iterator(accumulator, item) for each item. accumulator should be
   // the return value of the previous iterator call.
-  //  
+  //
   // You can pass in a starting value for the accumulator as the third argument
   // to reduce. If no starting value is passed, the first element is used as
   // the accumulator, and is never passed to the iterator. In other words, in
   // the case where a starting value is not passed, the iterator is not invoked
   // until the second element, with the first element as its second argument.
-  //  
+  //
   // Example:
   //   var numbers = [1,2,3];
   //   var sum = _.reduce(numbers, function(total, number){
   //     return total + number;
   //   }, 0); // should be 6
-  //  
+  //
   //   var identity = _.reduce([5], function(total, number){
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
